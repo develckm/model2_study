@@ -7,15 +7,24 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<%String login=request.getParameter("login");
-MemberVo mem=(MemberVo)request.getAttribute("mem"); %>
-
-<script>
-let login=<%=login%>;
-if(login!=null){
-	alert("js 로그인 :"+login);
+<%
+MemberVo mem=(MemberVo)request.getAttribute("mem");
+%>
+<%
+if(session.getAttribute("delete")!=null){
+	boolean delete=(boolean)session.getAttribute("delete");
+	String msg="";
+	if(delete){ 
+		msg="<script>alert(\"삭제 성공\");</script>";
+	}else{ 
+		msg="<script>alert(\"삭제 실패\");</script>";
+	} 
+	out.append(msg);
+	session.removeAttribute("delete");
 }
-</script>
+%>
+
+
 
 <body>
 	<h1>/mem/modify.jsp</h1>
@@ -71,7 +80,14 @@ if(login!=null){
 	
 		<p>
 			<label>
-				등급:<input type="number" size="1" name="grade" value="<%=mem.getGrade()%>">
+				등급:<select size="1" name="grade" value="<%=mem.getGrade()%>">
+					<option value="0" <%if(mem.getGrade()==0){out.append("selected");}%> >총관리자(0)</option>
+					<option value="1" <%if(mem.getGrade()==1){out.append("selected");}%> >관리자(1)</option>
+					<option value="2" <%if(mem.getGrade()==2){out.append("selected");}%> >판매자(2)</option>
+					<option value="3" <%if(mem.getGrade()==3){out.append("selected");}%> >소비자(3)</option>
+					<option value="4" <%if(mem.getGrade()==4){out.append("selected");}%> >탈퇴(4)</option>
+				
+				</select>
 			</label>
 		</p>
 		<p>
@@ -81,14 +97,14 @@ if(login!=null){
 		</p>
 				<p>
 			<label>
-				생일:<input type="text" name="birth" value="<%=mem.getBirth()%>">
+				생일:<input type="date" name="birth" value="<%=mem.getBirth()%>" pattern="yyyy-mm-dd">
 			</label>
 		</p>
 		
 		<p>
 			<button type="reset">리셋</button>
 			<button type="submit">제출</button>
-			
+			<a href="./delete.do?id=<%out.append(mem.getId());%>">삭제</a>
 		</p>
 	
 	</form>

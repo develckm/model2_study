@@ -9,4 +9,11 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  <!--DD 배포서술자 : 서버의 web.xml 보다 우선순위가 높다.
+  		배포서술자 수정하면 서버를 재접속해야한다.
+  		(webSevlet 등록도 배포서술자 수정에 포함된다.)
+    -->
+	<session-config>
+		<session-timeout>5</session-timeout>
+	</session-config>
 </web-app>

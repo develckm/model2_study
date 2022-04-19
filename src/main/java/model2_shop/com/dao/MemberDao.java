@@ -1,9 +1,11 @@
 package model2_shop.com.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,17 @@ import model2_shop.com.vo.MemberVo;
 public class MemberDao implements MemberDaoAble{
 
 	private String list_sql="SELECT * FROM MEMBER";
+	private String update_sql="UPDATE MEMBER SET "
+			+ " pw=?,"
+			+ " phone=?,"
+			+ " email=?,"
+			+ " name=?,"
+			+ " address=?,"
+			+ " address_detail=?,"
+			+ " birth=?"
+			+ " WHERE id=?";
+	private String delete_sql="DELETE FROM MEMBER WHERE ID=?";
+	private String insert_sql="INSERT INTO MEMBER(id,email,phone,pw,name,address,address_detail,grade,birth) VALUES (?,?,?,?,?,?,?,?,?)";
 	@Override
 	public List<MemberVo> list(int page) throws ClassNotFoundException, SQLException {
 		List<MemberVo> mem_list=new ArrayList<MemberVo>();
@@ -60,19 +73,40 @@ public class MemberDao implements MemberDaoAble{
 	@Override
 	public boolean insert(MemberVo mem)
 			throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		//INSERT INTO MEMBER(id,email,phone,pw,name,address,address_detail,grade,birth) VALUES (?,?,?,?,?,?,?,?,?);
+		Connection conn=ShopConnection.getConnection();
+		PreparedStatement ps=conn.prepareStatement(insert_sql);
+		ps.setString(1, mem.getId());
+		ps.setString(2, mem.getEmail());
+		ps.setString(3, mem.getPhone());
+		ps.setString(4, mem.getPw());
+		ps.setString(5, mem.getName());
+		ps.setString(6, mem.getAddress());
+		ps.setString(7, mem.getAddress_detail());
+		ps.setByte(8, mem.getGrade());
+		ps.setString(9,new SimpleDateFormat("yyyy-mm-DD").format(mem.getBirth()));
+		int insert=ps.executeUpdate();
+		if(insert>0) {
+			return true;
+		}else {
+			return false;			
+		}
 	}
-
 	@Override
 	public boolean update(MemberVo mem)
 			throws ClassNotFoundException, SQLException {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-mm-DD");
 		Connection conn=ShopConnection.getConnection();
 		PreparedStatement ps=conn
-				.prepareStatement("UPDATE MEMBER SET name=?, phone=? WHERE id=?");
-		ps.setString(1, mem.getName());
+				.prepareStatement(update_sql);
+		ps.setString(1, mem.getPw());
 		ps.setString(2, mem.getPhone());
-		ps.setString(3, mem.getId());
+		ps.setString(3, mem.getEmail());
+		ps.setString(4, mem.getName());
+		ps.setString(5, mem.getAddress());
+		ps.setString(6, mem.getAddress_detail());
+		ps.setString(7, sdf.format(mem.getBirth()));
+		ps.setString(8, mem.getId());
 		int update=ps.executeUpdate();
 		//delete,update,insert 시 사용 :  결과는 몇개가 수정되었는지 
 		if(update>0) {
@@ -84,8 +118,16 @@ public class MemberDao implements MemberDaoAble{
 	@Override
 	public boolean delete(String id)
 			throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		Connection conn=ShopConnection.getConnection();
+		PreparedStatement ps=conn.prepareStatement(delete_sql);
+		ps.setString(1, id);
+		int delete=ps.executeUpdate(); //delete,update, insert  => 성공한 수
+		//session 으로 성공 실패 (서버에 저장되는 객체)
+		if(delete>0) {
+			return true;			
+		}else {
+			return false;
+		}
 	}
 
 	public static void main(String[]args) {

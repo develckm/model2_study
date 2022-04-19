@@ -10,9 +10,44 @@
 </head>
 <body>
 	<h1>멤버 관리 페이지 입니다.</h1>
+	<h2>
+		<a href="insert.do">
+			멤버 등록
+		</a>
+	</h2>
 	<%
 		List<MemberVo> mem_list=(List<MemberVo>)request.getAttribute("mem_list");
+		//boolean delete=(boolean)(request.getSession().getAttribute("delete"));
+		//HttpSession session=requset.getSession() => 미리 만들어져 있다. 
+		//PrintWriter out=reqonse.getWrite() =>미리 만들어져 있다. 
 	%>
+	<%
+	if(session.getAttribute("delete")!=null){
+		boolean delete=(boolean)session.getAttribute("delete");
+	%>
+	<%if(delete){ %>
+	<script>alert("삭제 성공");</script>
+	<%}else{ %>
+	<script>alert("삭제 실패");</script>
+	<%} 
+		session.removeAttribute("delete");
+	}
+	%>
+	
+<%
+if(session.getAttribute("insert")!=null){
+	boolean delete=(boolean)session.getAttribute("insert");
+	String msg="";
+	if(delete){ 
+		msg="<script>alert(\"등록 성공\");</script>";
+	}else{ 
+		msg="<script>alert(\"등록 실패\");</script>";
+	} 
+	out.append(msg);
+	session.removeAttribute("insert");
+}
+%>
+	
 	<table>
 		<thead>
 		<tr>
