@@ -20,15 +20,36 @@ if(session.getAttribute("insert")!=null){
 	session.removeAttribute("insert");
 }
 %>
-
-
 <body>
+<script>
+window.onload=function(){
+	const MemInsert =document.forms.MemInsert;
+	MemInsert.id.addEventListener("input",async(e)=>{
+		if(e.target.value.length>4){
+			const res=await fetch("./id_check.do?id="+e.target.value); ///MemberIdCheck.java
+			const json=await res.json();
+			console.log(json.id_check);
+			if(json.id_check){
+				checkId.innerText="사용 가능 아이디";
+				checkId.style.color="green";
+			}else{
+				checkId.innerText="사용 불가능 아이디";
+				checkId.style.color="red";
+			}			
+		}else{
+			checkId.innerText="5글자 이상 입력하세요!";
+			checkId.style.color="red";
+
+		}
+	});
+}
+</script>
 	<h1>/mem/insert.jsp</h1>
 	<h2>멤버 등록 폼</h2>
-	<form action="./insert.do" method="post">
+	<form action="./insert.do" method="post" name="MemInsert">
 		<p>
 			<label>
-				아이디:<input type="text" name="id" value="hong">
+				아이디:<input type="text" name="id" value="" placeholder="아이디 입력">
 			</label>
 			<span id="checkId">중복체크중입니다.</span>
 		</p>
@@ -36,25 +57,25 @@ if(session.getAttribute("insert")!=null){
 			<label>
 				이메일:<input type="text" name="email" value="hong@gmail.com">
 			</label>
-			<span id="checkId">중복체크중입니다.</span>
+			<span id="checkEmail">중복체크중입니다.</span>
 		</p>
 		<p>
 			<label>
 				폰:<input type="text" name="phone" value="111-1111-1234">
 			</label>
-			<span id="checkId">중복체크중입니다.</span>
+			<span id="checkPhone">중복체크중입니다.</span>
 		</p>
 		<p>
 			<label>
 				pw:<input type="text" name="pw" value="1234">
 			</label>
-			<span id="checkId">길이가 4이상</span>
+			<span id="checkPw">길이가 4이상</span>
 		</p>
 			<p>
 			<label>
 				pw:<input type="text" name="pw_check" value="">
 			</label>
-			<span id="checkId">중복체크중입니다.</span>
+			<span id="checkPwCheck">중복체크중입니다.</span>
 		</p>
 		
 		<p>
