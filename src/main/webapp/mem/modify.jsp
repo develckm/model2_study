@@ -23,10 +23,8 @@ if(session.getAttribute("delete")!=null){
 	session.removeAttribute("delete");
 }
 %>
-
-
-
 <body>
+	<%@ include file="/header_nav.jsp" %>
 	<h1>/mem/modify.jsp</h1>
 	<h2><%=mem.toString() %></h2>
 	<h2>멤버 수정 폼</h2>

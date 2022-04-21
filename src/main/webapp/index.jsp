@@ -7,13 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>샵 관리자 페이지</h1>
-	<nav>
-		<ul>
-			<li><a href="<%=request.getContextPath()%>/mem/list.do">멤버리스트(관리)</a></li>
-			<li><a href="<%=request.getContextPath()%>/cate/list.do">카테고리스트(관리)</a></li>
-		
-		</ul>
-	</nav>
+	<%@ include file="/header_nav.jsp" %>
+	<%-- <iframe width="100%" src="<%=request.getContextPath() %>/header_nav.jsp"></iframe> --%>
+	<!-- 자동으로 톰캣이 사용하는 이름인 ContextPath를 붙여준다. -->
+	<h1>샵 관리자 페이지 메인</h1>
 </body>
 </html>

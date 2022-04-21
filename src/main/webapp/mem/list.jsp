@@ -9,6 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<%@ include file="/header_nav.jsp" %>
+
 	<h1>멤버 관리 페이지 입니다.</h1>
 	<h2>
 		<a href="insert.do">

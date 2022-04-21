@@ -16,4 +16,12 @@
 	<session-config>
 		<session-timeout>5</session-timeout>
 	</session-config>
+	<servlet>
+		<servlet-name>ItemAjaxManaging</servlet-name>
+		<servlet-class>model2_shop.com.contoroller.ItemAjaxManaging</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ItemAjaxManaging</servlet-name>
+		<url-pattern>/item/ajax_managing.do</url-pattern>
+	</servlet-mapping>
 </web-app>

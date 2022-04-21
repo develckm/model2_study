@@ -1,0 +1,124 @@
+package model2_shop.com.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import model2_shop.com.vo.ItemVo;
+
+public class ItemDao implements ItemDaoAble{
+	private String list_sql="SELECT * FROM ITEM";
+
+	//private String sale_list_sql="SELECT * FROM ITEM WHERE STATE=0 && SALE_time>현재날짜";//실제 사용자가 보는 아이템 리스트
+	@Override
+	public List<ItemVo> list(int page)
+			throws ClassNotFoundException, SQLException {
+		Connection conn=ShopConnection.getConnection();
+		PreparedStatement ps=conn.prepareStatement(list_sql);
+		ResultSet rs=ps.executeQuery();
+		List<ItemVo> item_list=new ArrayList<ItemVo>();
+		while(rs.next()) {
+			ItemVo item=new ItemVo();
+			item.setItem_num(rs.getInt("item_num"));
+			item.setCount(rs.getInt("count"));
+			item.setPrice(rs.getInt("price"));
+			item.setCate_num(rs.getInt("cate_num"));
+			item.setState(rs.getByte("state"));
+			item.setColor(rs.getString("color"));
+			item.setTitle(rs.getString("title"));
+			item.setMain_img(rs.getString("main_img"));
+			item.setDetail_img(rs.getString("detail_img"));
+			item.setName(rs.getString("name"));
+			item.setMember_id(rs.getString("member_id"));
+			item.setModel_num(rs.getString("model_num"));
+			item.setPost_time(rs.getTimestamp("post_time"));
+			item.setSale_time(rs.getTimestamp("sale_time"));
+			item.setSale_end_time(rs.getTimestamp("sale_end_time"));
+			item_list.add(item);
+		}
+		return item_list;
+	}
+	@Override
+	public ItemVo detail(int num) throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean insert(ItemVo item)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean update(ItemVo item)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(int num) throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(int[] num)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<ItemVo> list(int page, String writer)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ItemVo detail(int num, String writer)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean delete(int num, String writer)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(int[] num, String writer)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<ItemVo> sale_list(int page)
+			throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	//톰캣의 메인이 아니고 직접 제작한 자바 어플 
+	public static void main(String[] args) {
+		try {
+			System.out.println(new ItemDao().list(0));
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+
+
+
+

@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.xdevapi.JsonParser;
+
 import model2_shop.com.vo.MemberVo;
 
 
@@ -55,6 +57,7 @@ public class MemberDao implements MemberDaoAble{
 		ps.setString(1, id);
 		ResultSet rs=ps.executeQuery();
 		MemberVo mem=new MemberVo();
+		
 		while(rs.next()) {
 			mem.setId(rs.getString("id"));
 			mem.setName(rs.getString("name"));

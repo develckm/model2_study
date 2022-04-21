@@ -21,6 +21,8 @@ if(session.getAttribute("insert")!=null){
 }
 %>
 <body>
+	<%@ include file="/header_nav.jsp" %>
+
 <script>
 window.onload=function(){
 	const MemInsert =document.forms.MemInsert;
