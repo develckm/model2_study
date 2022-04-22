@@ -87,6 +87,7 @@
 			        <p id="insertMsg"></p>
 			      </div>
 			      <div class="modal-footer">
+   			        <button type="button" id="listReloadBtn" class="btn btn-primary">ITEM 리스트 GO!</button>
 			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 			      </div>
 			    </div>

@@ -10,7 +10,7 @@ import java.util.List;
 import model2_shop.com.vo.ItemVo;
 
 public class ItemDao implements ItemDaoAble{
-	private String list_sql="SELECT * FROM ITEM";
+	private String list_sql="SELECT * FROM ITEM ORDER BY POST_TIME DESC";
 
 	//private String sale_list_sql="SELECT * FROM ITEM WHERE STATE=0 && SALE_time>현재날짜";//실제 사용자가 보는 아이템 리스트
 	@Override

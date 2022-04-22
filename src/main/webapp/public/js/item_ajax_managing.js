@@ -9,9 +9,17 @@ const pillsInsertTab2 = new bootstrap.Tab(pillsInsertTab);
 const pillsListTab2 = new bootstrap.Tab(pillsListTab);
 const pillsModifyTab2 = new bootstrap.Tab(pillsModifyTab);
 
-
 const insertModar=document.getElementById("insertModar");
 const insertModar2=new bootstrap.Modal(insertModar);
+
+const listReloadBtn=document.getElementById("listReloadBtn");
+
+listReloadBtn.addEventListener(("click"),(e)=>{
+	insertModar2.hide();
+	pillsListTab2.show();
+	itemListFetch();
+})
+
 
 pillsInsertTab2.show();
 //insertModar2.hide();
@@ -40,11 +48,11 @@ itemForm.addEventListener("submit",async(e)=>{
 	insertModar2.show();
 });
 
-
 itemListFetch();
 async function itemListFetch(){
 	let res=await fetch(AJAX_URL);
 	let json=await res.json();
+	itemList.innerHTML="";
 	json.forEach((item)=>{
 		const itemNode=itemClone.cloneNode(true);
 		for(let key in item){
