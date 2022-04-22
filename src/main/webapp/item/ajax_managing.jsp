@@ -74,7 +74,6 @@
 					</tr>
 		  		</tbody>
 		  	</table>
-		  
 		  </div>
 		  <div class="tab-pane fade container-sm" id="pills-insert" role="tabpanel" aria-labelledby="pills-insert-tab">
 		  	<div class="modal" id="insertModar" tabindex="-1">

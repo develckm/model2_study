@@ -50,7 +50,26 @@ public class ItemDao implements ItemDaoAble{
 	@Override
 	public boolean insert(ItemVo item)
 			throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
+		String sql="INSERT INTO ITEM "
+				+ "(cate_num,color,count,detail_img,main_img,member_id,model_num,name,price,state,title) "
+				+ "values (?,?,?,?,?,?,?,?,?,?,?)";
+		Connection conn=ShopConnection.getConnection();
+		PreparedStatement ps=conn.prepareStatement(sql);
+		ps.setInt(1, item.getCate_num());
+		ps.setString(2, item.getColor());
+		ps.setInt(3, item.getCount());
+		ps.setString(4, item.getDetail_img());
+		ps.setString(5, item.getMain_img());
+		ps.setString(6, item.getMember_id());
+		ps.setString(7, item.getModel_num());
+		ps.setString(8, item.getName());
+		ps.setInt(9, item.getPrice());
+		ps.setByte(10, item.getState());
+		ps.setString(11, item.getTitle());
+		int insert =ps.executeUpdate();
+		if(insert>0) {
+			return true;
+		}
 		return false;
 	}
 
