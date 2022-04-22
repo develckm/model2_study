@@ -16,15 +16,21 @@ const pillsModifyTab2 = new bootstrap.Tab(pillsModifyTab);
 const insertModar=document.getElementById("insertModar");
 const insertModar2=new bootstrap.Modal(insertModar);
 
+const updateModar=document.getElementById("updateModar");
+const updateModar2=new bootstrap.Modal(updateModar);
+
 const listReloadBtn=document.getElementById("listReloadBtn");
-
-
-
-listReloadBtn.addEventListener(("click"),(e)=>{
+const listReloadBtn2=document.getElementById("listReloadBtn2");
+listReloadBtn2.addEventListener("click",(e)=>{
+	updateModar2.hide();
+	pillsListTab2.show();
+	itemListFetch();
+});
+listReloadBtn.addEventListener("click",(e)=>{
 	insertModar2.hide();
 	pillsListTab2.show();
 	itemListFetch();
-})
+});
 
 
 //pillsInsertTab2.show();
@@ -70,7 +76,13 @@ itemModifyForm.addEventListener("submit",async (e)=>{
 	});
 	let json=await res.json()
 	console.log(json);
+	updateModar2.show();
+	if(json.update){
+		updateMsg.innerText="수정성공"
+	}else{
+		updateMsg.innerText="수정실패"
 
+	}
 });
 
 
@@ -104,10 +116,10 @@ async function modifyLoad(e){
 	pillsModifyTab2.show();
 	let res=await fetch(AJAX_URL+"?item_num="+item_num);
 	let json=await res.json();
-	console.log(json);
+	//console.log(json);
 	const input_list=(itemModifyForm.querySelectorAll("[name]"));
 	input_list.forEach((input)=>{
-		console.log(input.value,input.name)
+		//console.log(input.value,input.name)
 		input.value=json[input.name];
 	});
 }

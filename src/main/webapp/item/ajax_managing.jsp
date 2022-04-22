@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Item ajax 관리</title>
-<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing2.js" defer="defer"></script>
+<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing3.js" defer="defer"></script>
 </head>
 <body>
 	<%@ include file="/header_nav.jsp" %>
@@ -79,6 +79,8 @@
 		  	</table>
 		  </div>
 		  <div class="tab-pane fade container-sm" id="pills-insert" role="tabpanel" aria-labelledby="pills-insert-tab">
+		  	
+		  	
 		  	<div class="modal" id="insertModar" tabindex="-1">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
@@ -162,6 +164,27 @@
 		  	</form>
 		  </div>
 		  <div class="tab-pane fade" id="pills-modify" role="tabpanel" aria-labelledby="pills-modify-tab">
+		  
+		  	<div class="modal" id="updateModar" tabindex="-1">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">아이템 수정</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <p id="updateMsg"></p>
+			      </div>
+			      <div class="modal-footer">
+   			        <button type="button" id="listReloadBtn2"  class="btn btn-primary">ITEM 리스트 GO!</button>
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+					  
+		  
+		  
 		  	<h2>아이템 수정</h2>
 		  		<form action="" name="itemModifyForm" >
 			  		<p class="input-group">
