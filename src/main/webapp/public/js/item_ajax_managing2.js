@@ -4,7 +4,11 @@ const itemClone=document.getElementById("itemClone");
 const pillsInsertTab=document.getElementById("pills-insert-tab");
 const pillsListTab=document.getElementById("pills-list-tab");
 const pillsModifyTab=document.getElementById("pills-modify-tab");
+
 const itemForm=document.forms["itemForm"];
+const itemModifyForm=document.forms["itemModifyForm"];
+
+
 const pillsInsertTab2 = new bootstrap.Tab(pillsInsertTab);
 const pillsListTab2 = new bootstrap.Tab(pillsListTab);
 const pillsModifyTab2 = new bootstrap.Tab(pillsModifyTab);
@@ -14,6 +18,8 @@ const insertModar2=new bootstrap.Modal(insertModar);
 
 const listReloadBtn=document.getElementById("listReloadBtn");
 
+
+
 listReloadBtn.addEventListener(("click"),(e)=>{
 	insertModar2.hide();
 	pillsListTab2.show();
@@ -21,7 +27,7 @@ listReloadBtn.addEventListener(("click"),(e)=>{
 })
 
 
-pillsInsertTab2.show();
+//pillsInsertTab2.show();
 //insertModar2.hide();
 
 //pillsListTab2.show();
@@ -47,6 +53,29 @@ itemForm.addEventListener("submit",async(e)=>{
 	
 	insertModar2.show();
 });
+itemModifyForm.addEventListener("submit",async (e)=>{
+	e.preventDefault(0);
+	//rest api put 방식으로 통신 (Get,Post,Put,Delete}})=>모든 http 통신에서 가능하다. 
+	
+	const inputNodes=(e.target.querySelectorAll("[name]"));	
+	//{tite:"dd",count:10}
+	const putData=new Object();
+	for( let input of inputNodes){
+		putData[input.name]=input.value;
+	}
+
+	let res=await fetch(AJAX_URL,{
+		method:"put",
+		body: JSON.stringify(putData)
+	});
+	let json=await res.json()
+	console.log(json);
+
+});
+
+
+
+
 
 itemListFetch();
 async function itemListFetch(){
@@ -57,7 +86,10 @@ async function itemListFetch(){
 		const itemNode=itemClone.cloneNode(true);
 		for(let key in item){
 			if(itemNode.querySelector(`.${key}`)){
-				itemNode.querySelector(`.${key}`).innerText=item[key];				
+				itemNode.querySelector(`.${key}`).innerText=item[key];
+				if(key=="title"){
+					itemNode.querySelector(`.${key}`).dataset.num=item["item_num"];
+				}		
 			}
 			itemNode.id="";
 			//console.log(`${key}:${item[key]}`);
@@ -66,3 +98,22 @@ async function itemListFetch(){
 		itemList.append(itemNode);
 	});
 };
+
+async function modifyLoad(e){
+	let item_num=(e.target.dataset.num);
+	pillsModifyTab2.show();
+	let res=await fetch(AJAX_URL+"?item_num="+item_num);
+	let json=await res.json();
+	console.log(json);
+	const input_list=(itemModifyForm.querySelectorAll("[name]"));
+	input_list.forEach((input)=>{
+		console.log(input.value,input.name)
+		input.value=json[input.name];
+	});
+}
+
+
+
+
+
+

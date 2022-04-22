@@ -60,11 +60,18 @@ public class ItemAjax extends HttpServlet {
 		response.getWriter().append("{\"insert\":"+insert+"}");
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		///////id 파라미터가 오면 detail을 반환 
+		String item_num=request.getParameter("item_num");
+		
 		ItemDao itemDao=new ItemDao();
 		response.setContentType("application/json;charset=UTF-8;");
 		
 		try {
-			response.getWriter().append(itemDao.list(0).toString());
+			if(item_num==null) {
+				response.getWriter().append(itemDao.list(0).toString());				
+			}else{
+				response.getWriter().append( itemDao.detail(Integer.parseInt(item_num)).toString() );
+			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -72,7 +79,39 @@ public class ItemAjax extends HttpServlet {
 	}
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		StringBuffer json_str=new StringBuffer();
+		BufferedReader br=request.getReader();//본문 해더의 문자열을 읽는 객체 
+		String line="";
+		while((line=br.readLine())!=null) {
+			json_str.append(line);
+		}
+		JSONObject json=new JSONObject(json_str.toString());
+		System.out.println(json);
+		ItemVo item=new ItemVo();
+		item.setItem_num(Integer.parseInt( json.get("item_num").toString() ));
+		item.setCate_num(Integer.parseInt( json.getString("cate_num") ));
+		item.setCount(Integer.parseInt( json.getString("count") ));
+		item.setPrice(Integer.parseInt( json.getString("price")));
+		item.setState(Byte.parseByte(json.getString("state")));
+		item.setColor(json.getString("color"));
+		item.setDetail_img(json.getString("detail_img"));
+		item.setMain_img(json.getString("main_img"));
+		item.setMember_id(json.getString("member_id"));
+		item.setModel_num(json.getString("model_num"));
+		item.setName(json.getString("name"));
+		item.setTitle(json.getString("title"));
+		System.out.println("item="+item);
+		
+		boolean update= false;
+		ItemDao itemDao=new ItemDao();
+		try {
+			update=itemDao.update(item);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+		response.getWriter().append("{\"update\":"+update+"}");
+		
 	}
 
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Item ajax 관리</title>
-<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing.js" defer="defer"></script>
+<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing2.js" defer="defer"></script>
 </head>
 <body>
 	<%@ include file="/header_nav.jsp" %>
@@ -58,7 +58,10 @@
 		  			<tr id="itemClone">
 						<td class="item_num"></td>  
 						<td class="name"></td>     
-						<td class="title"></td>    
+						<td>
+							<a class="title" href="javascript:void(0)" onclick="modifyLoad(event)" data-num="">
+							</a>
+						</td>    
 						<td class="count"></td>    
 						<td class="price"></td>    
 						<td class="color"></td>     
@@ -160,6 +163,79 @@
 		  </div>
 		  <div class="tab-pane fade" id="pills-modify" role="tabpanel" aria-labelledby="pills-modify-tab">
 		  	<h2>아이템 수정</h2>
+		  		<form action="" name="itemModifyForm" >
+			  		<p class="input-group">
+					  <label for="itemModifyFormItemNum" class="input-group-text">상품번호</label>
+					  <input name="item_num" type="text" class="form-control" id="itemModifyFormItemNum" value="" readonly>
+					</p>
+		  		
+			  		<p class="input-group">
+					  <label for="itemModifyFormName" class="input-group-text">상품이름</label>
+					  <input name="name" type="text" class="form-control" id="itemModifyFormName" value="광 마우스">
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormTitme" class="input-group-text">게시타이틀</label>
+					  <input name="title" type="text" class="form-control" id="itemModifyFormTitle" value="게이밍 광 마우스 짱짱맨">
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormModelNum" class="input-group-text">상품모델</label>
+					  <input name="model_num" type="text" class="form-control" id="itemModifyFormModelNum" value="MX1322F3">
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormMemberId" class="input-group-text">게시자</label>
+					  <input name="member_id" type="text" class="form-control" id="itemModifyFormMemberId" value="admin" readonly>
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormPrice" class="input-group-text">상품가격</label>
+					  <input name="price" type="number" class="form-control" id="itemModifyFormPrice" value="20000" >
+					</p>
+					<p class="input-group">
+					  <label for="itemModifyFormCateNum" class="input-group-text">카테고리</label>
+					  <select name="cate_num" class="form-control" id="itemModifyFormCateNum" >
+					  	<option value="1">가전</option>
+				  		<option value="2">컴퓨터</option>
+					  </select>
+					</p>
+					
+			  		<p class="input-group">
+					  <label for="itemModifyFormMainImg" class="input-group-text">상품메인이미지</label>
+					  <input name="main_img" type="text" class="form-control" id="itemModifyFormMainImg" value="">
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormDetailImg" class="input-group-text">상품상세이미지</label>
+					  <input name="detail_img" type="text" class="form-control" id="itemModifyFormDetailImg" value="">
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormPostTime" class="input-group-text">상품게시일</label>
+					  <input name="post_time" type="text" class="form-control" id="itemModifyFormPostTime" value="" readonly>
+					</p>
+			  		<p class="input-group">
+					  <label for="itemModifyFormSaleTime" class="input-group-text">상품판매시작일</label>
+					  <input name="sale_time" type="datetime-local" class="form-control" id="itemModifyFormSaleTime" value="">
+					</p>
+					
+			  		<p class="input-group">
+					  <label for="itemModifyFormSaleEndTime" class="input-group-text">상품판매종료일</label>
+					  <input name="sale_end_time" type="datetime-local" class="form-control" id="itemModifyFormSaleEndTime" value="">
+					</p>
+			  	
+			  		<p class="input-group">
+				  		<label for="itemModifyFormColor" class="input-group-text">상품색</label>
+						<input name="color" type="color" class="form-control form-control-color" id="itemModifyFormColor" value="#563d7c" title="Choose your color">
+			  			<label for="itemModifyFormState" class="input-group-text">상태</label>
+			  			<select name="state" id="itemModifyFormState" class="form-control">
+			  				<option value="0" selected>공개</option>
+			  				<option value="1">비공개</option>
+			  			</select>
+			  			<label for="itemModifyFormCount" class="input-group-text">판매수</label>
+			  			<input name="count" id="itemModifyFormCount" type="number" class="form-control" value="100">
+			  		</p>
+			  		<p class="d-grid gap-2 d-md-flex justify-content-md-end">
+			  			<a class="btn btn-outline-danger" href="javascript:void(0)" >삭제</a>
+			  			<button class="btn btn-outline-warning " type="reset">리셋</button>
+			  			<button class="btn btn-outline-primary " type="submit">수정</button>
+			  		</p>
+		  		</form>
 		  </div>
 		</div>
 	</div>
