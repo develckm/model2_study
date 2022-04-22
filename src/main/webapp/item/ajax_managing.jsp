@@ -77,6 +77,23 @@
 		  
 		  </div>
 		  <div class="tab-pane fade container-sm" id="pills-insert" role="tabpanel" aria-labelledby="pills-insert-tab">
+		  	<div class="modal" id="insertModar" tabindex="-1">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">아이템 등록</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        <p id="insertMsg"></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		  	
 		  	<h2>아이템 등록</h2>
 		  	<form action="" name="itemForm" >
 		  		<p class="input-group">

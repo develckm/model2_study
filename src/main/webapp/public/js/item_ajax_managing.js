@@ -9,18 +9,35 @@ const pillsInsertTab2 = new bootstrap.Tab(pillsInsertTab);
 const pillsListTab2 = new bootstrap.Tab(pillsListTab);
 const pillsModifyTab2 = new bootstrap.Tab(pillsModifyTab);
 
+
+const insertModar=document.getElementById("insertModar");
+const insertModar2=new bootstrap.Modal(insertModar);
+
 pillsInsertTab2.show();
+//insertModar2.hide();
+
 //pillsListTab2.show();
 //pillsModifyTab2.show();
 
 const AJAX_URL="./ajax.do";
 
-itemForm.addEventListener("submit",(e)=>{
+itemForm.addEventListener("submit",async(e)=>{
 	e.preventDefault(0);
-
-
-
-
+	const inputNodes=(itemForm.querySelectorAll("[name]"));	
+	//{tite:"dd",count:10}
+	const postData=new Object();
+	for( let input of inputNodes){
+		postData[input.name]=input.value;
+	}
+	//console.log(postData);
+	let res=await fetch(AJAX_URL,{
+		method:"post",
+		body:JSON.stringify(postData)
+	});
+	let json=await res.json();
+	insertMsg.innerText=(json.insert)?"등록 성공":"등록실패";
+	
+	insertModar2.show();
 });
 
 
