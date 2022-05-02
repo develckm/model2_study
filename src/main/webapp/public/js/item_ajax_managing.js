@@ -59,6 +59,7 @@ itemForm.addEventListener("submit",async(e)=>{
 	
 	insertModar2.show();
 });
+//업데이트
 itemModifyForm.addEventListener("submit",async (e)=>{
 	e.preventDefault(0);
 	//rest api put 방식으로 통신 (Get,Post,Put,Delete}})=>모든 http 통신에서 가능하다. 
@@ -68,6 +69,17 @@ itemModifyForm.addEventListener("submit",async (e)=>{
 	const putData=new Object();
 	for( let input of inputNodes){
 		putData[input.name]=input.value;
+		if(input.name=="sale_time"||input.name=="sale_end_time"){
+			let v=input.value;
+			if(v){//"" null NaN undefined
+				let v_list=v.split("T");
+				let date=v_list[0];
+				let time_list=v_list[1].split(":");
+				v=date+" "+time_list[0]+":"+time_list[1]+":00";	
+				putData[input.name]=v;
+				console.log(v);				
+			}
+		}
 	}
 
 	let res=await fetch(AJAX_URL,{
@@ -116,11 +128,17 @@ async function modifyLoad(e){
 	pillsModifyTab2.show();
 	let res=await fetch(AJAX_URL+"?item_num="+item_num);
 	let json=await res.json();
-	//console.log(json);
+	console.log(json);
 	const input_list=(itemModifyForm.querySelectorAll("[name]"));
 	input_list.forEach((input)=>{
 		//console.log(input.value,input.name)
-		input.value=json[input.name];
+		if(input.name=="post_time" || input.name=="sale_time" || input.name=="sale_end_time"){
+			let value=json[input.name];
+			value=value.replace(" ","T");
+			input.value=value;
+		}else{
+			input.value=json[input.name];			
+		}
 	});
 }
 

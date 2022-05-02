@@ -13,7 +13,7 @@ public class ShopConnection {
 	static final private String url="jdbc:mysql://localhost:3306/spring_shop";
 	static final private String user="root"; 
 	static final private String pw="mysql";
-	static final private String driver="com.mysql.cj.jdbc.Driver";
+	static final private String driver="com.mysql.jdbc.Driver";
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
 		Connection conn=null;
 		Class.forName(driver);

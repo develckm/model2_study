@@ -98,12 +98,14 @@ public class ItemDao implements ItemDaoAble{
 	@Override
 	public boolean update(ItemVo item)
 			throws ClassNotFoundException, SQLException {
-		String update_sql="UPDATE ITEM SET  price=?, cate_num=?  WHERE item_num=?";
+		String update_sql="UPDATE ITEM SET  price=?, cate_num=?, sale_time=?, sale_end_time=?  WHERE item_num=?";
 		Connection conn=ShopConnection.getConnection();
 		PreparedStatement ps=conn.prepareStatement(update_sql);
 		ps.setInt(1, item.getPrice());
 		ps.setInt(2, item.getCate_num());
-		ps.setInt(3, item.getItem_num());
+		ps.setTimestamp(3, item.getSale_time());
+		ps.setTimestamp(4, item.getSale_end_time());
+		ps.setInt(5, item.getItem_num());
 		int update=ps.executeUpdate();
 		if(update>0) {
 			return true;

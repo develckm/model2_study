@@ -47,9 +47,7 @@ public class ItemAjax extends HttpServlet {
 		item.setTitle(json.getString("title"));
 		//item.setSale_end_time(  (json.getString("sale_end_time")=="")? null : Timestamp.valueOf(json.getString("sale_end_time").split("T")[0]  )  );
 		//item.setSale_time(  (json.getString("sale_time")=="")? null : Timestamp.valueOf(json.getString("sale_time").split("T")[0])  );
-		
 		System.out.println(item);
-		
 		boolean insert=false;
 		ItemDao itemDao=new ItemDao();
 		try {
@@ -57,7 +55,7 @@ public class ItemAjax extends HttpServlet {
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-		response.getWriter().append("{\"insert\":"+insert+"}");
+		response.getWriter().append("{\"insert\": "+insert+" }");
 	}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		///////id 파라미터가 오면 detail을 반환 
@@ -100,8 +98,11 @@ public class ItemAjax extends HttpServlet {
 		item.setModel_num(json.getString("model_num"));
 		item.setName(json.getString("name"));
 		item.setTitle(json.getString("title"));
-		System.out.println("item="+item);
 		
+		Timestamp sale_time=(json.get("sale_time")!="")?Timestamp.valueOf(json.getString("sale_time")):null;		
+		Timestamp sale_end_time=(json.get("sale_end_time")!="")?Timestamp.valueOf(json.getString("sale_end_time")):null;		
+		item.setSale_time(sale_time);
+		item.setSale_end_time(sale_end_time);
 		boolean update= false;
 		ItemDao itemDao=new ItemDao();
 		try {

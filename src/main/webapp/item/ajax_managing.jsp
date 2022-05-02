@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Item ajax 관리</title>
-<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing3.js" defer="defer"></script>
+<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing.js" defer="defer"></script>
 </head>
 <body>
 	<%@ include file="/header_nav.jsp" %>
@@ -230,11 +230,12 @@
 					</p>
 			  		<p class="input-group">
 					  <label for="itemModifyFormPostTime" class="input-group-text">상품게시일</label>
-					  <input name="post_time" type="text" class="form-control" id="itemModifyFormPostTime" value="" readonly>
+					  <input name="post_time"  type="datetime-local" class="form-control" id="itemModifyFormPostTime" value="" readonly>
 					</p>
 			  		<p class="input-group">
 					  <label for="itemModifyFormSaleTime" class="input-group-text">상품판매시작일</label>
-					  <input name="sale_time" type="datetime-local" class="form-control" id="itemModifyFormSaleTime" value="">
+					  <input name="sale_time" type="datetime-local" class="form-control" id="itemModifyFormSaleTime" value="" 
+					  oninput="console.log(this.value)">
 					</p>
 					
 			  		<p class="input-group">
