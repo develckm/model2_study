@@ -1,0 +1,195 @@
+DROP DATABASE SPRING_SHOP;
+CREATE DATABASE SPRING_SHOP;
+
+DROP user 'shop_admin'@'localhost';
+
+CREATE USER 'shop_admin'@'localhost' IDENTIFIED WITH mysql_native_password BY '1234';
+
+grant select, insert, update, delete on SPRING_SHOP.* to 'shop_admin'@localhost;
+
+USE SPRING_SHOP;
+
+CREATE TABLE MEMBER(
+id VARCHAR(255) NOT NULL,
+pw VARCHAR(255) NOT NULL,
+phone VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+name VARCHAR(255) NOT NULL,
+address VARCHAR(255),
+address_detail VARCHAR(255),
+signup_time DATETIME DEFAULT CURRENT_TIMESTAMP(),
+birth DATE NOT NULL,
+grade TINYINT NOT NULL DEFAULT 3 COMMENT '0 회원 및 게시글 관리자 1 게시글 관리자 2 판매자 3 일반 고객 4 탈퇴',
+CONSTRAINT PRIMARY KEY(ID),
+CONSTRAINT UNIQUE(PHONE),
+CONSTRAINT UNIQUE(EMAIL)
+);
+INSERT INTO MEMBER 
+(ID,PW,PHONE,EMAIL,NAME,ADDRESS,ADDRESS_DETAIL,BIRTH,grade)
+VALUES
+('super','1234','010-0000-0000','super@gmail.com','길동','고양시 덕양구 내유동','AAA 빌라 101호','1900-01-01',0)
+,('admin','1234','010-1111-1111','admin@gmail.com','길동','고양시 덕양구 내유동','AAA 빌라 101호','1900-01-01',1)
+,('seller','1234','010-2222-2222','seller@gmail.com','영희','고양시 덕양구 내유동','BBB 빌라 102호','1960-02-01',2)
+,('customer','1234','010-3333-3333','customer@gmail.com','수철','고양시 덕양구 내유동','CCC 빌라 103호','2000-03-01',3)
+,('leaver','1234','010-4444-4444','leaver@gmail.com','수철','고양시 덕양구 내유동','CCC 빌라 103호','2000-03-01',4)
+;
+
+CREATE TABLE BOARD(
+num INT NOT NULL AUTO_INCREMENT,
+member_id VARCHAR(255) NOT NULL,
+title VARCHAR(255) NOT NULL,
+contents VARCHAR(255) DEFAULT '',
+post_time DATETIME DEFAULT CURRENT_TIMESTAMP(),
+state TINYINT NOT NULL DEFAULT 0 COMMENT '0 게시 1 비공개 2 신고' ,
+PRIMARY KEY(NUM),
+FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(ID) ON UPDATE CASCADE ON DELETE RESTRICT
+) ;
+
+INSERT INTO BOARD
+(MEMBER_ID,TITLE,CONTENTS)
+VALUES 
+( 'seller','2번번째글이다 와~!','반갑습니다. 여러분~~!!')
+,( 'seller','3번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'seller','4번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'seller','5번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'seller','6번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'seller','7번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','8번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','9번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','10번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','11번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','12번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','13번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'customer','14번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'leaver','15번번째글이다 와~!','반갑습니다. 여러분~~!!')
+ ,( 'leaver','16번번째글이다 와~!','반갑습니다. 여러분~~!!');
+
+CREATE TABLE CATEGORY(
+cate_num INT NOT NULL AUTO_INCREMENT, 
+name VARCHAR(255) NOT NULL,
+sub INT,
+PRIMARY KEY(CATE_NUM),
+FOREIGN KEY(SUB ) REFERENCES CATEGORY(CATE_NUM )
+);
+INSERT INTO CATEGORY( NAME, SUB )
+VALUES('가전',NULL),
+('컴퓨터',NULL),
+('아웃도어',NULL),
+('패션',NULL),
+('주방',NULL),
+('TV',1),
+('세탁기',1),
+('냉장고',1),
+('청소기',1),
+('오븐',1),
+('올레드',6),
+('미니LED',6),
+('QLED',6),
+('여성의류',4),
+('남성의류',4),
+('가방',4),
+('신발',4),
+('운동화',4),
+('스니커즈',17),
+('남성구두',17),
+('여성구두',17);
+
+
+SELECT C.NAME 메인, S.NAME 서브, D.NAME 디테일
+FROM CATEGORY C INNER JOIN CATEGORY S 
+ON C.CATE_NUM=S.SUB
+INNER JOIN CATEGORY D 
+ON S.CATE_NUM=D.SUB;
+
+CREATE TABLE ITEM(
+item_num INT NOT NULL AUTO_INCREMENT, 
+name VARCHAR(255) NOT NULL,
+title VARCHAR(255) NOT NULL,
+count INT NOT NULL,
+price INT NOT NULL,
+color VARCHAR(255),
+main_img VARCHAR(255) NOT NULL,
+detail_img VARCHAR(255),
+model_num VARCHAR(255),
+member_id VARCHAR(255) NOT NULL,
+post_time DATETIME DEFAULT CURRENT_TIMESTAMP(),
+sale_time DATETIME DEFAULT CURRENT_TIMESTAMP(),
+sale_end_time DATETIME DEFAULT NULL,
+state TINYINT NOT NULL DEFAULT 0 COMMENT '0 게시 1 비공개 2 신고',
+cate_num INT NOT NULL,
+PRIMARY KEY(ITEM_NUM),
+FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(ID), 
+FOREIGN KEY(CATE_NUM ) REFERENCES CATEGORY(CATE_NUM )
+
+);
+
+
+
+
+
+INSERT INTO ITEM 
+(NAME,TITLE,COUNT,PRICE,COLOR,MAIN_IMG,DETAIL_IMG,MODEL_NUM,MEMBER_ID,CATE_NUM )
+VALUES
+('탈퇴한사람의상품','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','leaver',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'화이트','162058C.jpg','162058C_detail.jpg','162058C','seller',19)
+,('컨버스','컨버스 척 70 클래식' ,100,58800,'엘로우','162058C.jpg','162058C_detail.jpg','162058C','seller',19);
+
+CREATE TABLE ITEM_COMMENT(
+comment_num INT NOT NULL AUTO_INCREMENT, 
+title VARCHAR(255) DEFAULT '',
+contents VARCHAR(255) DEFAULT '',
+img VARCHAR(255),
+post_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+delivery_grade TINYINT NOT NULL DEFAULT 6,
+item_grade TINYINT NOT NULL DEFAULT 6,
+seller_grade TINYINT NOT NULL DEFAULT 6,
+item_num INT NOT NULL,
+member_id VARCHAR(255) NOT NULL,
+state TINYINT NOT NULL DEFAULT 0 COMMENT '0 게시 1 비공개 2 신고',
+PRIMARY KEY(COMMENT_NUM),
+FOREIGN KEY(MEMBER_ID) REFERENCES MEMBER(ID), 
+FOREIGN KEY(ITEM_NUM ) REFERENCES ITEM(ITEM_NUM )
+);
+
+INSERT INTO ITEM
+(ITEM_NUM,NAME,TITLE,COUNT,PRICE,COLOR,MAIN_IMG,DETAIL_IMG,MODEL_NUM,MEMBER_ID,CATE_NUM )
+VALUES
+(999,'컨버스','컨버스 척 70 클래식',100,58800,'블랙','162058C.jpg','162058C_detail.jpg','162058C','seller',19);
+
+INSERT INTO MEMBER 
+(ID,PW,PHONE,EMAIL,NAME,ADDRESS,ADDRESS_DETAIL,BIRTH)
+VALUES
+('COMENT_WRITER',1234,'010-7777-7777','COMENT_WRITER@gmail.com','길동','고양시 덕양구 내유동','zzz 빌라 101호','1900-01-01');
+
+INSERT INTO ITEM_COMMENT 
+(TITLE, CONTENTS,
+IMG, DELIVERY_GRADE,
+SELLER_GRADE,
+ITEM_GRADE, 
+ITEM_NUM, 
+MEMBER_ID )
+VALUES
+("너무이뻐요","배송도 빨라요","1_999_COMENT_WRITER_product_comment.jpeg",10,10,10,999,'COMENT_WRITER')
+,("그냥그래요","배송도 별로에요","2_999_COMENT_WRITER_product_comment.jpeg",3,8,7,999,'COMENT_WRITER')
+,("별루에요","배송도 빨라요","3_999_COMENT_WRITER_product_comment.jpeg",10,5,6,999,'COMENT_WRITER')
+,("이뻐요","하루 걸렸어요","4_999_COMENT_WRITER_product_comment.jpeg",9,7,8,999,'COMENT_WRITER');

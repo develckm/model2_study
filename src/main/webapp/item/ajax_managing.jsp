@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Item ajax 관리</title>
-<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing.js" defer="defer"></script>
+<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing2.js" defer="defer"></script>
 </head>
 <body>
 	<%@ include file="/header_nav.jsp" %>
@@ -255,7 +255,8 @@
 			  			<input name="count" id="itemModifyFormCount" type="number" class="form-control" value="100">
 			  		</p>
 			  		<p class="d-grid gap-2 d-md-flex justify-content-md-end">
-			  			<a class="btn btn-outline-danger" href="javascript:void(0)" >삭제</a>
+			  			<a class="btn btn-outline-danger" href="javascript:void(0)" id="itemDelA">삭제</a>
+			  			<button type="button" class="btn btn-outline-danger" id="itemDelBtn">삭제</button>
 			  			<button class="btn btn-outline-warning " type="reset">리셋</button>
 			  			<button class="btn btn-outline-primary " type="submit">수정</button>
 			  		</p>

@@ -21,6 +21,19 @@ const updateModar2=new bootstrap.Modal(updateModar);
 
 const listReloadBtn=document.getElementById("listReloadBtn");
 const listReloadBtn2=document.getElementById("listReloadBtn2");
+
+console.log(itemDelA.form);//a 태그는 입력요소가 아니기 때문에 소속된 form을 참조할 수 없다. 
+console.log(itemDelBtn.form.item_num);
+itemDelBtn.addEventListener("click",(e)=>{
+	const form=e.target.form;
+	let item_num_value=form.item_num.value;
+	let item_title_value=form.title.value
+	let del=confirm("("+item_num_value+")"+item_title_value+"를 삭제하시겠습니까?\n 삭제시 상품평도 모두 삭제됩니다.");
+	console.log(del);
+	
+});
+
+
 listReloadBtn2.addEventListener("click",(e)=>{
 	updateModar2.hide();
 	pillsListTab2.show();

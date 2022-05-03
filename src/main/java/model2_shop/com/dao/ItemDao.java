@@ -73,8 +73,8 @@ public class ItemDao implements ItemDaoAble{
 	public boolean insert(ItemVo item)
 			throws ClassNotFoundException, SQLException {
 		String sql="INSERT INTO ITEM "
-				+ "(cate_num,color,count,detail_img,main_img,member_id,model_num,name,price,state,title) "
-				+ "values (?,?,?,?,?,?,?,?,?,?,?)";
+				+ "(cate_num,color,count,detail_img,main_img,member_id,model_num,name,price,state,title,sale_time,sale_end_time) "
+				+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Connection conn=ShopConnection.getConnection();
 		PreparedStatement ps=conn.prepareStatement(sql);
 		ps.setInt(1, item.getCate_num());
@@ -88,6 +88,8 @@ public class ItemDao implements ItemDaoAble{
 		ps.setInt(9, item.getPrice());
 		ps.setByte(10, item.getState());
 		ps.setString(11, item.getTitle());
+		ps.setTimestamp(12, item.getSale_time());
+		ps.setTimestamp(13, item.getSale_end_time());
 		int insert =ps.executeUpdate();
 		if(insert>0) {
 			return true;

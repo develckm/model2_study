@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,14 +46,22 @@ public class ItemAjax extends HttpServlet {
 		item.setModel_num(json.getString("model_num"));
 		item.setName(json.getString("name"));
 		item.setTitle(json.getString("title"));
-		//item.setSale_end_time(  (json.getString("sale_end_time")=="")? null : Timestamp.valueOf(json.getString("sale_end_time").split("T")[0]  )  );
-		//item.setSale_time(  (json.getString("sale_time")=="")? null : Timestamp.valueOf(json.getString("sale_time").split("T")[0])  );
-		System.out.println(item);
 		boolean insert=false;
+
+		String sale_time_str=json.getString("sale_time"); //"2022-05-03T10:45"
+		String sale_end_time_str=json.getString("sale_end_time");
+		//Timestamp.valueOf("yyyy-mm-dd hh:mm:ss");=>Timestamp type으로 형변환 
 		ItemDao itemDao=new ItemDao();
 		try {
+			Timestamp sale_time=(sale_time_str!="")?
+					Timestamp.valueOf(sale_time_str.replace("T", " ")+":00"):
+					new Timestamp(new Date().getTime());
+			Timestamp sale_end_time=(sale_end_time_str!="")?Timestamp.valueOf(sale_end_time_str.replace("T", " ")+":00"):null;
+			item.setSale_time(sale_time);
+			item.setSale_end_time(sale_end_time);
+			
 			insert=itemDao.insert(item);
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ClassNotFoundException | SQLException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 		response.getWriter().append("{\"insert\": "+insert+" }");
