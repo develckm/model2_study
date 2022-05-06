@@ -117,7 +117,14 @@ public class ItemDao implements ItemDaoAble{
 
 	@Override
 	public boolean delete(int num) throws ClassNotFoundException, SQLException {
-		// TODO Auto-generated method stub
+		String delete_sql="DELETE FROM ITEM WHERE item_num=?";
+		Connection conn=ShopConnection.getConnection();
+		PreparedStatement ps=conn.prepareStatement(delete_sql);
+		ps.setInt(1, num);
+		int delete=ps.executeUpdate();
+		if(delete>0) { //item_num 대표키기 때문에 무조건 1개만 삭제됨  
+			return true;
+		}
 		return false;
 	}
 

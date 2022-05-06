@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import model2_shop.com.dao.ItemCommentDao;
 import model2_shop.com.dao.ItemDao;
 import model2_shop.com.vo.ItemVo;
 
@@ -123,8 +126,31 @@ public class ItemAjax extends HttpServlet {
 		response.getWriter().append("{\"update\":"+update+"}");
 		
 	}
-
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String item_num_str=request.getParameter("item_num");
+		System.out.println("delete 방식으로 통신 item_num:"+item_num_str);
+		boolean delete=false;
+		int commnet_delete=0;
+		ItemDao itemDao=new ItemDao();
+		ItemCommentDao itemCommentDao=new ItemCommentDao();
+		try {
+			int item_num=Integer.parseInt(item_num_str);
+			commnet_delete=itemCommentDao.deleteItemNum(item_num);
+			delete=itemDao.delete(item_num);
+		} catch (NumberFormatException | ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+		//아이템에 달린 상품평도 동시에 삭제됨
+		//삭제를 성공했는지를 응답 {delete:true, comment_delete:4} 
+		//delete =new ItemDao().delete();
+		HashMap<String, Object> delMap=new HashMap<>();
+		delMap.put("delete", delete);
+		delMap.put("comment_delete",  commnet_delete);
+		System.out.println(new JSONObject(delMap).toString());
+		response.getWriter().append(new JSONObject(delMap).toString());
 	}
 }
+
+
+
+

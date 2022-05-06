@@ -21,24 +21,37 @@ const updateModar2=new bootstrap.Modal(updateModar);
 
 const listReloadBtn=document.getElementById("listReloadBtn");
 const listReloadBtn2=document.getElementById("listReloadBtn2");
+const AJAX_URL="./ajax.do";
 
 console.log(itemDelA.form);//a 태그는 입력요소가 아니기 때문에 소속된 form을 참조할 수 없다. 
 console.log(itemDelBtn.form.item_num);
-itemDelBtn.addEventListener("click",(e)=>{
+/**아이템 삭제*/
+itemDelBtn.addEventListener("click",async(e)=>{
 	const form=e.target.form;
 	let item_num_value=form.item_num.value;
 	let item_title_value=form.title.value
 	let del=confirm("("+item_num_value+")"+item_title_value+"를 삭제하시겠습니까?\n 삭제시 상품평도 모두 삭제됩니다.");
-	console.log(del);
-	
+	if(del){
+		let res=await fetch(AJAX_URL+"?item_num="+item_num_value,{method:"delete"}); 
+		let json=await res.json();
+		console.log(json);
+		if(json.delete){
+			alert("삭제 성공\n"+"상품평 :"+json.comment_delete+" 개 삭제");
+			pillsListTab2.show();
+			itemListFetch();
+		}else{
+			alert("삭제 실패 참조된 상품평을 삭제하세요!");
+		}	
+	}	
 });
 
-
+/** 업데이트 완료시 나오는 모달(누르면 리스트로) */
 listReloadBtn2.addEventListener("click",(e)=>{
 	updateModar2.hide();
 	pillsListTab2.show();
 	itemListFetch();
 });
+/** 등록 완료시 나오는 모달(누르면 리스트로) */
 listReloadBtn.addEventListener("click",(e)=>{
 	insertModar2.hide();
 	pillsListTab2.show();
@@ -52,7 +65,6 @@ listReloadBtn.addEventListener("click",(e)=>{
 //pillsListTab2.show();
 //pillsModifyTab2.show();
 
-const AJAX_URL="./ajax.do";
 
 itemForm.addEventListener("submit",async(e)=>{
 	e.preventDefault(0);
@@ -62,10 +74,10 @@ itemForm.addEventListener("submit",async(e)=>{
 	for( let input of inputNodes){
 		postData[input.name]=input.value;
 	}
-	//console.log(postData);
+	console.log(postData);
 	let res=await fetch(AJAX_URL,{
 		method:"post",
-		body:JSON.stringify(postData)
+		body:JSON.stringify(postData),
 	});
 	let json=await res.json();
 	insertMsg.innerText=(json.insert)?"등록 성공":"등록실패";
