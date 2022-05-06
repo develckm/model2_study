@@ -12,6 +12,9 @@
 		    </button>
 			<div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
 				<ul class="navbar-nav">
+<%
+Object login=session.getAttribute("login");
+if(login!=null&&(boolean)login){ %>
 					<li class="nav-item">
 						<a class=nav-link href="<%=request.getContextPath()%>/mem/list.do">
 							멤버리스트(관리)
@@ -31,29 +34,33 @@
 					      <li><a class="dropdown-item" href="#">Separated link</a></li>
 					    </ul>
 					  </li>					  
+<%} %>				
 				</ul>
-<!-- 			    <form class="d-flex">
-					<input class="form-control me-2" type="text" placeholder="id" aria-label="id">
-					<input class="form-control me-2" type="password" placeholder="pw" aria-label="pw">
-					<button class="btn btn-outline-success" type="submit">ajax_login</button>
-			    </form>
- -->				
+<%
+if(login!=null&&(boolean)login){
+%>	
+				<div>
+					<span><%=session.getAttribute("id")%></span>
+					(<span><%=session.getAttribute("name")%></span>)
+					님 로그인 
+					&nbsp;/&nbsp;
+					<a 	href="<%=request.getContextPath()%>/logout.do">
+						로그아웃
+					</a>
+				</div>
+<%}else{ %>				
  				<div class="d-flex">
-					<a 	class="" 
-						href="<%=request.getContextPath()%>/login.do">
+					<a 	href="<%=request.getContextPath()%>/login.do">
 						로그인
-					</a>
-					 &nbsp;/&nbsp; 
-					<a 	class="" 
-						href="<%=request.getContextPath()%>/singup.do">
+					</a>&nbsp;/&nbsp; 
+					<a 	href="<%=request.getContextPath()%>/singup.do">
 						회원가입
-					</a>
-					 &nbsp;/&nbsp; 
-					<a 	class="" 
-						href="<%=request.getContextPath()%>/login.do">
+					</a>&nbsp;/&nbsp; 
+					<a 	href="<%=request.getContextPath()%>/login.do">
 						ajax_로그인
 					</a>
 				</div>
+<%} %>				
 			</div>
 		</div>
 	</nav>

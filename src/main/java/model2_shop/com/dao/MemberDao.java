@@ -24,10 +24,17 @@ public class MemberDao implements MemberDaoAble{
 			+ " name=?,"
 			+ " address=?,"
 			+ " address_detail=?,"
-			+ " birth=?"
+			+ " birth=?,"
+			+ " grade=? "
 			+ " WHERE id=?";
 	private String delete_sql="DELETE FROM MEMBER WHERE ID=?";
 	private String insert_sql="INSERT INTO MEMBER(id,email,phone,pw,name,address,address_detail,grade,birth) VALUES (?,?,?,?,?,?,?,?,?)";
+	private String detail_sql="SELECT * FROM MEMBER WHERE id=?";
+	private String email_check_sql="SELECT * FROM MEMBER WHERE email=?";
+	private String phone_check_sql="SELECT * FROM MEMBER WHERE phone=?";
+
+	private String login_sql="SELECT * FROM MEMBER WHERE id=? and pw=?";
+
 	@Override
 	public List<MemberVo> list(int page) throws ClassNotFoundException, SQLException {
 		List<MemberVo> mem_list=new ArrayList<MemberVo>();
@@ -53,7 +60,7 @@ public class MemberDao implements MemberDaoAble{
 	@Override
 	public MemberVo detail(String id) throws ClassNotFoundException, SQLException {
 		Connection conn=ShopConnection.getConnection();
-		PreparedStatement ps=conn.prepareStatement("SELECT * FROM MEMBER WHERE id=?");
+		PreparedStatement ps=conn.prepareStatement(detail_sql);
 		ps.setString(1, id);
 		ResultSet rs=ps.executeQuery();
 		MemberVo mem=new MemberVo();
@@ -109,7 +116,9 @@ public class MemberDao implements MemberDaoAble{
 		ps.setString(5, mem.getAddress());
 		ps.setString(6, mem.getAddress_detail());
 		ps.setString(7, sdf.format(mem.getBirth()));
-		ps.setString(8, mem.getId());
+		ps.setByte(8, mem.getGrade());
+		ps.setString(9, mem.getId());
+
 		int update=ps.executeUpdate();
 		//delete,update,insert 시 사용 :  결과는 몇개가 수정되었는지 
 		if(update>0) {
@@ -132,19 +141,39 @@ public class MemberDao implements MemberDaoAble{
 			return false;
 		}
 	}
-
-	public static void main(String[]args) {
-		try {
-			MemberDao dao=new MemberDao();
-//			dao.list(1).forEach((MemberVo mem)->{
-//				System.out.println(mem);
-//			});
-			System.out.println(dao.detail("admin"));
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	@Override
+	public MemberVo login(String id, String pw) throws ClassNotFoundException, SQLException {
+		MemberVo mem=null;
+		Connection conn=ShopConnection.getConnection();
+		PreparedStatement ps=conn.prepareStatement(login_sql);
+		ps.setString(1, id);
+		ps.setString(2, pw);
+		ResultSet rs=ps.executeQuery();
+		//id가 대표키기 때문에 무조건 1개만 검색되기 때문에 while 사용 할 필요 x
+		if(rs.next()) {
+			mem=new MemberVo(); //id와 pw가 있을 때만 null이 아니다.
+			mem.setId(rs.getString("id"));
+			mem.setName(rs.getString("name"));
+			mem.setAddress(rs.getString("address"));
+			mem.setAddress_detail(rs.getString("address_detail"));
+			mem.setEmail(rs.getString("email"));
+			mem.setPhone(rs.getString("Phone"));
+			mem.setPw(rs.getString("pw"));
+			mem.setBirth(rs.getDate("birth"));
+			mem.setSignup_time(rs.getDate("signup_time"));
+			mem.setGrade(rs.getByte("grade"));
 		}
+		return mem;
+	}
+	@Override
+	public MemberVo emailCheck(String email) throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public MemberVo phoneCheck(String phone) throws ClassNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 
