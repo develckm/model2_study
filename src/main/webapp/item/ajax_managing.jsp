@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Item ajax 관리</title>
-<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing2.js" defer="defer"></script>
+<script src="<%=request.getContextPath()%>/public/js/item_ajax_managing3.js" defer="defer"></script>
 </head>
 <body>
 	<%@ include file="/header_nav.jsp" %>
@@ -38,7 +38,7 @@
 		  		<thead>
 		  			<tr>
 						<th class="col-1">num</th>     
-						<th class="col-1">name </th>        
+						<th class="col-1">main_img</th>        
 						<th class="col-2">title </th>       
 						<th class="col-1">count </th>       
 						<th class="col-1">price </th>       
@@ -57,7 +57,9 @@
 		  		<tbody id="itemList">
 		  			<tr id="itemClone">
 						<td class="item_num"></td>  
-						<td class="name"></td>     
+						<td>
+							<img class="main_img" alt="메인" src="">
+						</td>     
 						<td>
 							<a class="title" href="javascript:void(0)" onclick="modifyLoad(event)" data-num="">
 							</a>
@@ -100,7 +102,13 @@
 			</div>
 		  	
 		  	<h2>아이템 등록</h2>
-		  	<form action="" name="itemForm" >
+		  	<!-- 
+		  	form-data는 js객체인 FormData를 의미하고 append 된 객체를 자동으로 바이너리코드로 보내준다.  
+		  	multipart는 바이너리 코드를 보내는 기술
+		  	input type="file"은 files라는 필드가 존재하는데 전송하려는 파일의 바이너리코드가 포함된다. 
+		  	바이너리코드로 보내는 요청정보를 서버에서 받기 위해서는 별도의 라이브러리를 추가해야한다. (cos)
+		  	-->
+		  	<form action="" name="itemForm" enctype="multipart/form-data">
 		  		<p class="input-group">
 				  <label for="itemFormName" class="input-group-text">상품이름</label>
 				  <input name="name" type="text" class="form-control" id="itemFormName" value="광 마우스">
@@ -115,7 +123,7 @@
 				</p>
 		  		<p class="input-group">
 				  <label for="itemFormMemberId" class="input-group-text">게시자</label>
-				  <input name="mamber_id" type="text" class="form-control" id="itemFormMemberId" value="admin" readonly>
+				  <input name="member_id" type="text" class="form-control" id="itemFormMemberId" value="admin" readonly>
 				</p>
 		  		<p class="input-group">
 				  <label for="itemFormPrice" class="input-group-text">상품가격</label>
@@ -161,7 +169,9 @@
 		  			<button class="btn btn-outline-warning " type="reset">리셋</button>
 		  			<button class="btn btn-outline-primary " type="submit">등록</button>
 		  		</p>
+		  				  		
 		  	</form>
+		  	
 		  </div>
 		  <div class="tab-pane fade" id="pills-modify" role="tabpanel" aria-labelledby="pills-modify-tab">
 		  
@@ -260,6 +270,13 @@
 			  			<button class="btn btn-outline-warning " type="reset">리셋</button>
 			  			<button class="btn btn-outline-primary " type="submit">수정</button>
 			  		</p>
+			  		<p>
+			  			<img alt="메인이미지" width="100%" src="" name="main_img_output">
+			  		</p>
+			  		<p>
+			  			<img alt="상세이미지" width="100%"  src="" name="detail_img_output">
+			  		</p>
+			  		
 		  		</form>
 		  </div>
 		</div>

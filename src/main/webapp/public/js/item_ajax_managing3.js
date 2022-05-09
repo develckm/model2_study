@@ -66,18 +66,17 @@ listReloadBtn.addEventListener("click",(e)=>{
 //pillsModifyTab2.show();
 
 
+//file을 서버에 전송하기 위해서는 
+//브라우저에서 제공하는 multipart form-data를 사용해야한다.
+
 itemForm.addEventListener("submit",async(e)=>{
 	e.preventDefault(0);
-	const inputNodes=(itemForm.querySelectorAll("[name]"));	
-	//{tite:"dd",count:10}
-	const postData=new Object();
-	for( let input of inputNodes){
-		postData[input.name]=input.value;
-	}
-	console.log(postData);
+
+	const postData=new FormData(itemForm);
+
 	let res=await fetch(AJAX_URL,{
 		method:"post",
-		body:JSON.stringify(postData),
+		body:(postData),
 	});
 	let json=await res.json();
 	insertMsg.innerText=(json.insert)?"등록 성공":"등록실패";
@@ -138,6 +137,8 @@ async function itemListFetch(){
 				itemNode.querySelector(`.${key}`).innerText=item[key];
 				if(key=="title"){
 					itemNode.querySelector(`.${key}`).dataset.num=item["item_num"];
+				}else if(key=="main_img"){
+					itemNode.querySelector(`.${key}`).src="./../public/img/thubm/"+item[key];
 				}		
 			}
 			itemNode.id="";
@@ -161,6 +162,10 @@ async function modifyLoad(e){
 			let value=json[input.name];
 			value=value.replace(" ","T");
 			input.value=value;
+		}else if(input.name=="main_img_output"){
+			input.src= "./../public/img/"+json.main_img
+		}else if(input.name=="detail_img_output"){
+			input.src="./../public/img/"+json.detail_img
 		}else{
 			input.value=json[input.name];			
 		}

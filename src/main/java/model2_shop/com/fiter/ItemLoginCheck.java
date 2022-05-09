@@ -14,5 +14,6 @@ public class ItemLoginCheck implements Filter{
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		//로그인이 되어 있고 등급이 1이상인 사람(0,1)만 접근할 수 있도록 작성하세요!
+		chain.doFilter(request, response);
 	}
 }
